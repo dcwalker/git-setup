@@ -64,11 +64,12 @@ end
 desc "Setup git remotes for collaboration." 
 task :add_remotes do
   GIT_PROJECT_PATH = ENV['GIT_PROJECT_PATH']
+  project_name = GIT_PROJECT_PATH.split("/").last
   open("project_remotes_input") do |file|
     file.each do |line|
       next if line =~ /^#/
-      puts "cd #{GIT_PROJECT_PATH}; git remote add #{line}"
-      `cd #{GIT_PROJECT_PATH}; git remote add #{line}`
+      puts "cd #{GIT_PROJECT_PATH}; git remote add #{line}#{project_name}.git"
+      `cd #{GIT_PROJECT_PATH}; git remote add #{line}#{project_name}.git`
     end
   end
 end
