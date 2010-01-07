@@ -61,9 +61,15 @@ EOF
   end
 end
 
-# TODO
-#desc "Setup git remotes for collaboration." 
+desc "Setup git remotes for collaboration." 
 task :add_remotes do
+    open("examplerc") do |file|
+      file.each do |line|
+        next if line =~ /^#/
+        name, url = line.split(":")
+        puts %x[git remote add #{name} #{url}]
+      end
+    end
 end
 
 # TODO
