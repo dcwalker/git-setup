@@ -64,7 +64,7 @@ end
 desc "Setup git remotes for collaboration." 
 task :add_remotes do
   GIT_PROJECT_PATH = ENV['GIT_PROJECT_PATH']
-  open("examplerc") do |file|
+  open("project_remotes_input") do |file|
     file.each do |line|
       next if line =~ /^#/
       puts "cd #{GIT_PROJECT_PATH}; git remote add #{line}"

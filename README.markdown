@@ -46,3 +46,9 @@ A Launchd start file is generated in `/Library/LaunchDaemons/org.git.daemon.plis
 	    </dict>
 	  </dict>
 	</plist>
+
+
+add_remotes
+===========
+
+Setup git remotes for collaboration. Set `GIT_PROJECT_PATH` to the location of the git project to add remote repositories to.  Remote data comes from the `project_remotes_input` file, check the `project_remotes_input.example` file syntax.  Comment lines in your input file with `#`.
