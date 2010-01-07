@@ -10,17 +10,18 @@ task :setup_git_daemon do
   if os == "Linux"
     GIT_PATH = ENV['GIT_PATH'] || "/usr/bin/git"
     open("/etc/service/git-daemon/run", "w") do |file|
-      file.puts <<EOF
+      file.puts <<-EOF
 #!/bin/sh
 exec 2>&1
 echo "git daemon starting."
 exec chpst -u#{ENV['USER']} #{GIT_PATH} daemon --verbose --base-path=#{GIT_BASE_PATH}
 EOF
+
     end
   elsif os == "Darwin"
     GIT_PATH = ENV['GIT_PATH'] || "/usr/local/git/bin/git"
     open("/Library/LaunchDaemons/org.git.daemon.plist", "w") do |file|
-      file.puts <<EOF
+      file.puts <<-EOF
 <?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\"
  \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
