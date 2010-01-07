@@ -6,7 +6,7 @@ desc "Generate a startup script to launch git daemon at boot."
 task :setup_git_daemon do
   GIT_BASE_PATH = ENV['GIT_BASE_PATH'] || ENV['HOME']
 
-  os = %x[uname].chomp
+  os = `uname`.chomp
   if os == "Linux"
     GIT_PATH = ENV['GIT_PATH'] || "/usr/bin/git"
     open("/etc/service/git-daemon/run", "w") do |file|
@@ -63,13 +63,14 @@ end
 
 desc "Setup git remotes for collaboration." 
 task :add_remotes do
-    open("examplerc") do |file|
-      file.each do |line|
-        next if line =~ /^#/
-        name, url = line.split(":")
-        puts %x[git remote add #{name} #{url}]
-      end
+  GIT_PROJECT_PATH = ENV['GIT_PROJECT_PATH']
+  open("examplerc") do |file|
+    file.each do |line|
+      next if line =~ /^#/
+      puts "cd #{GIT_PROJECT_PATH}; git remote add #{line}"
+      `cd #{GIT_PROJECT_PATH}; git remote add #{line}`
     end
+  end
 end
 
 # TODO
