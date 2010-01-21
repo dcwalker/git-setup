@@ -71,12 +71,16 @@ task :add_remotes do
   
   (Dir.glob(GIT_PROJECT_PATH) - ['.', '..','.git','git-setup']).each do |project_path|
     next unless File.directory?(project_path)
+    # Skip if the project_path isn't a git project
+    next if `cd #{project_path}; git symbolic-ref HEAD 2> /dev/null` == ""
     # Assume the project name is the same as the directory name
     project_name = project_path.split("/").last
+    puts "--#{project_name}--"
     open("project_remotes_input") do |file|
       file.each do |line|
         next if line =~ /^#/
-        puts "cd #{project_path}; git remote add #{line}#{project_name}.git"
+        line = line.chomp
+        puts "git remote add #{line}#{project_name}.git"
         `cd #{project_path}; git remote add #{line}#{project_name}.git`
       end
     end
