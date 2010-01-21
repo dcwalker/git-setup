@@ -51,6 +51,6 @@ A Launchd start file is generated in `/Library/LaunchDaemons/org.git.daemon.plis
 add_remotes
 ===========
 
-Setup git remotes for collaboration. Set `GIT_PROJECT_PATH` to the location of the git project to add remote repositories to.  Remote data comes from the `project_remotes_input` file, check the `project_remotes_input.example` file syntax.  Comment lines in your input file with `#`.
+Setup git remotes for collaboration. Set `GIT_PROJECT_PATH` to the location of the specific git project to add remote repositories to.  Not setting the `GIT_PROJECT_PATH` causes remotes to be added to all the projects in `GIT_BASE_PATH`.  Remote data comes from the `project_remotes_input` file, check the `project_remotes_input.example` file syntax.  Comment lines in your input file with `#`.
 
-The task assumes your project name is the same as the remote's project name (local version is `git-setup` so the remote version should be `git-setup`).
+The task assumes your project name (directory name) is the same as the remote's project name (ex: local version is `git-setup` so the remote version should be `git-setup`).

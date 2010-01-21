@@ -1,11 +1,12 @@
 require 'rubygems'
 require 'rake'
 
+# Where are projects stored on system?  Used for setting the root for
+# git-daemon and determining shared names
+GIT_BASE_PATH = ENV['GIT_BASE_PATH'] || ENV['HOME']
 
 desc "Generate a startup script to launch git daemon at boot."
 task :setup_git_daemon do
-  GIT_BASE_PATH = ENV['GIT_BASE_PATH'] || ENV['HOME']
-
   os = `uname`.chomp
   if os == "Linux"
     GIT_PATH = ENV['GIT_PATH'] || "/usr/bin/git"
@@ -63,18 +64,21 @@ end
 
 desc "Setup git remotes for collaboration." 
 task :add_remotes do
-  GIT_PROJECT_PATH = ENV['GIT_PROJECT_PATH']
-  project_name = GIT_PROJECT_PATH.split("/").last
-  open("project_remotes_input") do |file|
-    file.each do |line|
-      next if line =~ /^#/
-      puts "cd #{GIT_PROJECT_PATH}; git remote add #{line}#{project_name}.git"
-      `cd #{GIT_PROJECT_PATH}; git remote add #{line}#{project_name}.git`
+  # GIT_PROJECT_PATH is the location of the project to add remotes to.
+  # Not setting this causes remotes to be added to all projects in the
+  # GIT_BASE_PATH
+  GIT_PROJECT_PATH = ENV['GIT_PROJECT_PATH'] ? ENV['GIT_PROJECT_PATH'] : File.expand_path(File.join(GIT_BASE_PATH, '*'))
+  
+  (Dir.glob(GIT_PROJECT_PATH) - ['.', '..','.git','git-setup']).each do |project_path|
+    next unless File.directory?(project_path)
+    # Assume the project name is the same as the directory name
+    project_name = project_path.split("/").last
+    open("project_remotes_input") do |file|
+      file.each do |line|
+        next if line =~ /^#/
+        puts "cd #{project_path}; git remote add #{line}#{project_name}.git"
+        `cd #{project_path}; git remote add #{line}#{project_name}.git`
+      end
     end
   end
-end
-
-# TODO
-#desc "Add Plugins to app based on subversion externals.  Requires git-rails-plugins." 
-task :setup_git_plugins do
 end
