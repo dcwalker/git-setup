@@ -80,8 +80,8 @@ task :add_remotes do
       file.each do |line|
         next if line =~ /^#/
         line = line.chomp
-        puts "git remote add #{line}#{project_name}.git"
-        `cd #{project_path}; git remote add #{line}#{project_name}.git`
+        puts "git remote add #{line}#{project_name}"
+        `cd #{project_path}; git remote add #{line}#{project_name}`
       end
     end
   end
