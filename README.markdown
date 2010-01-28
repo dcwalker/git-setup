@@ -1,7 +1,7 @@
 setup_git_daemon
 ================
 
-Generate a startup script to launch git daemon at boot.  Set `GIT_PATH` to git's location on your machine and `GIT_BASE_PATH` to the location you'd like to serve git projects from (think Apache document root).
+Generate a startup script to launch git daemon at boot.  Set `GIT_PATH` to git's location on your machine and `GIT_BASE_PATH` to the location you'd like to serve git projects from (think Apache document root).  Once git-daemon is running you just need to allow git-daemon to share your projects.  For each project you want to share `touch` a `git-daemon-export-ok` file inside the project's `.git` directory (ex: `cd $GIT_BASE_PATH/git-setup; touch .git/git-daemon-export-ok;`).
 
 ### Linux ###
 A daemon start file is generated in `/etc/service/git-daemon/run` that looks something like this. GIT path is assumed to be `/usr/bin/git` unless otherwise defined.
