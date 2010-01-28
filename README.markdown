@@ -47,6 +47,15 @@ A Launchd start file is generated in `/Library/LaunchDaemons/org.git.daemon.plis
 	  </dict>
 	</plist>
 
+Once the file exists you need to add it to the launchd system.  Start by loading `launchctl` and adding the git daemon to it's list.
+
+  dcwalker:~ $ launchctl
+  launchd% load /Library/LaunchDaemons/org.git.daemon.plist
+  launchd% start org.git.daemon
+  launchd% exit
+  dcwalker:~ $
+  
+Now you can check that it's running with `ps aux | grep git`
 
 add_remotes
 ===========
